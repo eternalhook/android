@@ -34,9 +34,7 @@ import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import com.google.android.material.snackbar.Snackbar
 import com.owncloud.android.R
-import com.owncloud.android.authentication.AccountUtils
 import com.owncloud.android.datamodel.OCFile
 import com.owncloud.android.datamodel.ThumbnailsCacheManager
 import com.owncloud.android.domain.capabilities.model.CapabilityBooleanType
@@ -45,7 +43,6 @@ import com.owncloud.android.domain.sharing.shares.model.OCShare
 import com.owncloud.android.domain.sharing.shares.model.ShareType
 import com.owncloud.android.extensions.showError
 import com.owncloud.android.lib.common.utils.Log_OC
-import com.owncloud.android.lib.resources.status.OwnCloudVersion
 import com.owncloud.android.presentation.UIResult
 import com.owncloud.android.presentation.adapters.sharing.SharePublicLinkListAdapter
 import com.owncloud.android.presentation.adapters.sharing.ShareUserListAdapter
@@ -117,8 +114,6 @@ class ShareFileFragment : Fragment(), ShareUserListAdapter.ShareUserAdapterListe
      * Capabilities of the server
      */
     private var capabilities: OCCapability? = null
-
-    private var serverVersion: OwnCloudVersion? = null
 
     private// Array with numbers already set in public link names
     // Inspect public links for default names already used
@@ -205,7 +200,6 @@ class ShareFileFragment : Fragment(), ShareUserListAdapter.ShareUserAdapterListe
         if (arguments != null) {
             file = arguments!!.getParcelable(ARG_FILE)
             account = arguments!!.getParcelable(ARG_ACCOUNT)
-            serverVersion = arguments!!.getParcelable(ARG_SERVER_VERSION)
         }
     }
 
@@ -575,7 +569,6 @@ class ShareFileFragment : Fragment(), ShareUserListAdapter.ShareUserAdapterListe
          */
         private const val ARG_FILE = "FILE"
         private const val ARG_ACCOUNT = "ACCOUNT"
-        private const val ARG_SERVER_VERSION = "SERVER_VERSION"
 
         private const val UNUSED_NUMBER = -1
         private const val USED_NUMBER_SECOND = 2
@@ -589,14 +582,12 @@ class ShareFileFragment : Fragment(), ShareUserListAdapter.ShareUserAdapterListe
          */
         fun newInstance(
             fileToShare: OCFile,
-            account: Account,
-            serverVersion: OwnCloudVersion? = AccountUtils.getServerVersion(account)
+            account: Account
         ): ShareFileFragment {
             val fragment = ShareFileFragment()
             val args = Bundle()
             args.putParcelable(ARG_FILE, fileToShare)
             args.putParcelable(ARG_ACCOUNT, account)
-            args.putParcelable(ARG_SERVER_VERSION, serverVersion)
             fragment.arguments = args
             return fragment
         }
