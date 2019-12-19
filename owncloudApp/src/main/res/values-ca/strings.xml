@@ -507,7 +507,5 @@
   <string name="welcome_feature_4_text">Fotos i Vídeos carregats automàticament</string>
   <string name="welcome_feature_5_title">Transmissió de vídeo</string>
   <string name="welcome_feature_5_text">Reprodueix els vídeos sense descarregar-los</string>
-  <string name="welcome_feature_7_title">Seleccionar tot</string>
-  <string name="welcome_feature_8_title">Disponible fora de línia</string>
   <string name="no_borwser_installed_alert">Ningun navegador instal·lat. Si us plau, instal·la un navegador per permetre un inici de sessió segur.</string>
 </resources>

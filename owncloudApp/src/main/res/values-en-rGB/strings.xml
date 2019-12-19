@@ -542,15 +542,5 @@
   <string name="welcome_feature_4_text">Your pictures/videos automatically uploaded</string>
   <string name="welcome_feature_5_title">Video streaming</string>
   <string name="welcome_feature_5_text">Play your videos without downloading them</string>
-  <string name="welcome_feature_6_title">Search in current folder</string>
-  <string name="welcome_feature_6_text">Filter your files by name</string>
-  <string name="welcome_feature_7_title">Select all</string>
-  <string name="welcome_feature_7_text">Select all files at once</string>
-  <string name="welcome_feature_8_title">Available offline</string>
-  <string name="welcome_feature_8_text">Your files automatically synchronised</string>
-  <string name="welcome_feature_9_title">Document provider</string>
-  <string name="welcome_feature_9_text">Access and edit your ownCloud files from other apps</string>
-  <string name="welcome_feature_10_title">Logs with search for everyone</string>
-  <string name="welcome_feature_10_text">Send us your logs to make the app work better</string>
-  <string name="no_borwser_installed_alert">No browser installed. Please install a Browser in order to allow a secure login.</string>
+    <string name="no_borwser_installed_alert">No browser installed. Please install a Browser in order to allow a secure login.</string>
 </resources>
