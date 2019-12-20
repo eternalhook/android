@@ -25,6 +25,7 @@ package com.owncloud.android.ui.activity;
 
 import android.accounts.Account;
 import android.accounts.AuthenticatorException;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -117,7 +118,7 @@ public class FileActivity extends DrawerActivity
     /**
      * Loads the ownCloud {@link Account} and main {@link OCFile} to be handled by the instance of
      * the {@link FileActivity}.
-     *
+     * <p>
      * Grants that a valid ownCloud {@link Account} is associated to the instance, or that the user
      * is requested to create a new one.
      */
@@ -316,12 +317,22 @@ public class FileActivity extends DrawerActivity
         }
     }
 
-    protected void showRequestAccountChangeNotice(String errorMessage) {
-        Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_INDEFINITE)
-                .setAction(R.string.auth_failure_snackbar_action, v ->
-                        startActivity(
-                                new Intent(FileActivity.this, ManageAccountsActivity.class)))
-                .show();
+    protected void showRequestAccountChangeNotice(String errorMessage, boolean mustChange) {
+        if (mustChange) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.auth_failure_snackbar_action)
+                    .setMessage(errorMessage)
+                    .setPositiveButton(android.R.string.yes, (dialog, which) -> startActivity(
+                            new Intent(FileActivity.this, ManageAccountsActivity.class)))
+                    .setIcon(R.drawable.common_error_grey)
+                    .setCancelable(false)
+                    .show();
+        } else {
+            Snackbar.make(findViewById(android.R.id.content), errorMessage, Snackbar.LENGTH_INDEFINITE)
+                    .setAction(R.string.auth_failure_snackbar_action, v ->
+                            startActivity(new Intent(FileActivity.this, ManageAccountsActivity.class)))
+                    .show();
+        }
     }
 
     protected void showRequestRegainAccess() {
@@ -334,7 +345,7 @@ public class FileActivity extends DrawerActivity
     /**
      * Invalidates the credentials stored for the current OC account and requests new credentials to the user,
      * navigating to {@link AuthenticatorActivity}
-     *
+     * <p>
      * Equivalent to call requestCredentialsUpdate(null);
      */
     protected void requestCredentialsUpdate() {
