@@ -46,29 +46,26 @@ public class FeatureList {
     static final private FeatureItem featuresList[] = {
             // Basic features showed on first install
             new FeatureItem(R.drawable.whats_new_files, R.string.welcome_feature_1_title,
-                    R.string.welcome_feature_1_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false, false),
+                    R.string.welcome_feature_1_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false),
             new FeatureItem(R.drawable.whats_new_share, R.string.welcome_feature_2_title,
-                    R.string.welcome_feature_2_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false, false),
+                    R.string.welcome_feature_2_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false),
             new FeatureItem(R.drawable.whats_new_accounts, R.string.welcome_feature_3_title,
-                    R.string.welcome_feature_3_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false, false),
+                    R.string.welcome_feature_3_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false),
             new FeatureItem(R.drawable.whats_new_camera_uploads, R.string.welcome_feature_4_title,
-                    R.string.welcome_feature_4_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false, false),
+                    R.string.welcome_feature_4_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false),
             new FeatureItem(R.drawable.whats_new_video_streaming, R.string.welcome_feature_5_title,
-                    R.string.welcome_feature_5_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false, false),
+                    R.string.welcome_feature_5_text, "2.7.0", "0", SHOW_ON_FIRST_RUN, false),
 
             // Features introduced in 2.14.0
-            new FeatureItem(R.drawable.whats_new_no_more_10, R.string.welcome_feature_11_title,
-                    R.string.welcome_feature_11_text, "2.14.1", "0", SHOW_ON_UPGRADE, true, false),
             new FeatureItem(R.drawable.whats_new_no_more_4_4, R.string.welcome_feature_12_title,
-                    R.string.welcome_feature_12_text, "2.14.1", "0", SHOW_ON_UPGRADE, false, true)
+                    R.string.welcome_feature_12_text, "2.14.1", "0", SHOW_ON_UPGRADE, true)
     };
 
     static public FeatureItem[] get() {
         return featuresList;
     }
 
-    static public FeatureItem[] getFiltered(final int lastSeenVersionCode, final boolean isFirstRun, boolean isBeta,
-                                            boolean anyAccountWithServerVersionLowerThan10) {
+    static public FeatureItem[] getFiltered(final int lastSeenVersionCode, final boolean isFirstRun, boolean isBeta) {
         List<FeatureItem> features = new LinkedList<>();
 
         Log_OC.d(TAG, "Getting filtered features");
@@ -80,11 +77,9 @@ public class FeatureList {
             } else if (!isFirstRun && !item.shouldShowOnFirstRun() &&
                     MainApp.Companion.getVersionCode() >= itemVersionCode &&
                     lastSeenVersionCode < itemVersionCode) {
-                if (anyAccountWithServerVersionLowerThan10 && item.shouldShowOnlyInAccountsWithServersLowerThan10()) {
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && item.shouldShowOnlyInDevicesLowerThan5()) {
                     features.add(item);
-                } else if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && item.shouldShowOnlyInDevicesLowerThan5()) {
-                    features.add(item);
-                } else if (!item.shouldShowOnlyInAccountsWithServersLowerThan10() && !item.shouldShowOnlyInDevicesLowerThan5()) {
+                } else if (!item.shouldShowOnlyInDevicesLowerThan5()) {
                     features.add(item);
                 }
             }
@@ -100,11 +95,10 @@ public class FeatureList {
         private int versionNumber;
         private int betaVersion;
         private boolean showOnInitialRun;
-        private boolean showOnlyInAccountsWithServersLowerThan10;
         private boolean shouldShowOnlyInDevicesLowerThan5;
 
         private FeatureItem(int image, int titleText, int contentText, String version, String betaVersion,
-                            boolean showOnInitialRun, boolean showOnlyInAccountsWithServersLowerThan10,
+                            boolean showOnInitialRun,
                             boolean shouldShowOnlyInDevicesLowerThan5) {
             this.image = image;
             this.titleText = titleText;
@@ -112,7 +106,6 @@ public class FeatureList {
             this.versionNumber = versionCodeFromString(version);
             this.betaVersion = versionCodeFromString(betaVersion);
             this.showOnInitialRun = showOnInitialRun;
-            this.showOnlyInAccountsWithServersLowerThan10 = showOnlyInAccountsWithServersLowerThan10;
             this.shouldShowOnlyInDevicesLowerThan5 = shouldShowOnlyInDevicesLowerThan5;
         }
 
@@ -150,10 +143,6 @@ public class FeatureList {
 
         private boolean shouldShowOnFirstRun() {
             return showOnInitialRun;
-        }
-
-        private boolean shouldShowOnlyInAccountsWithServersLowerThan10() {
-            return showOnlyInAccountsWithServersLowerThan10;
         }
 
         private boolean shouldShowOnlyInDevicesLowerThan5() {
